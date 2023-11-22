@@ -35,6 +35,9 @@ namespace OcsfDemo.Schema
         [JsonPropertyName("servity")]
         public string Severity { get; set; }
 
+        [JsonPropertyName("severity_id")]
+        public int SeverityId { get; set; }
+
         [JsonPropertyName("duration")]
         public int Duration { get; set; }
 
@@ -65,9 +68,6 @@ namespace OcsfDemo.Schema
         [JsonPropertyName("activity_name")]
         public string ActivityName { get; set; }
 
-        [JsonPropertyName("severity_id")]
-        public int SeverityId { get; set; }
-
         [JsonPropertyName("src_endpoint")]
         public Endpoint SourceEndpoint { get; set; }
 
@@ -79,5 +79,8 @@ namespace OcsfDemo.Schema
 
         [JsonPropertyName("user_result")]
         public UserResult UserResult { get; set; }
+
+        [JsonPropertyName("cloud")]
+        public Cloud Cloud { get; set; }
     }
 }

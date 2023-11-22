@@ -3,7 +3,7 @@
 namespace OcsfDemo.Schema
 {
     /// <summary>
-    /// 
+    /// TODO: Reevalute this class. It should sync with documentation and base class for NetworkEndpoint
     /// </summary>
     public class Endpoint
     {

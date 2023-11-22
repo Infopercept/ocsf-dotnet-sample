@@ -96,9 +96,18 @@ void OnCreated(object sender, FileSystemEventArgs e)
                 Name = actorName,
                 uid = correlationId                
             },
-            
-          //  UserResult = "Successfully joined device using account type: User with identifier: 02effdba-ad08-48e7-9a6f-825a44d670ab.",
-          //  SourceEndpoint = "Device",
+            Cloud = new Cloud
+            {
+                Provider = "Azure",
+                Region = "East US"
+            },
+            Severity = Severity.Informational.ToString(),
+            SeverityId = (int) Severity.Informational,
+            SourceEndpoint = new Endpoint
+            {
+                Name = actorType,
+                IpAddress = ipAddress
+            }
         };
 
         if(actorType == "User")
