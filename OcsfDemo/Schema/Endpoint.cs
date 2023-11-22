@@ -5,7 +5,7 @@ namespace OcsfDemo.Schema
     /// <summary>
     /// 
     /// </summary>
-    public class SrcEndpoint
+    public class Endpoint
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }

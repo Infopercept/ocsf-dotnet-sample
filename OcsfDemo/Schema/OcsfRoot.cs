@@ -14,8 +14,14 @@ namespace OcsfDemo.Schema
         [JsonPropertyName("message")]
         public string Message { get; set; }
 
+        [JsonPropertyName("observables")]
+        public string Observables { get; set; }
+
         [JsonPropertyName("status")]
         public string Status { get; set; }
+
+        [JsonPropertyName("actor")]
+        public string Actor { get; set; }
 
         [JsonPropertyName("time")]
         public long Time { get; set; }
@@ -63,7 +69,7 @@ namespace OcsfDemo.Schema
         public int SeverityId { get; set; }
 
         [JsonPropertyName("src_endpoint")]
-        public SrcEndpoint SourceEndpoint { get; set; }
+        public Endpoint SourceEndpoint { get; set; }
 
         [JsonPropertyName("status_detail")]
         public string StatusDetail { get; set; }

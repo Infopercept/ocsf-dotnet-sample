@@ -20,6 +20,12 @@ namespace OcsfDemo.Schema
         public int TypeId { get; set; }
 
         [JsonPropertyName("full_name")]
-        public string TullName { get; set; }
+        public string FullName { get; set; }
+
+        public void SetUserType(UserType userType)
+        {
+            TypeId = (int)userType;
+            Type = userType.ToString();
+        }
     }
 }
