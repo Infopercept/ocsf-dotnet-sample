@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OcsfDemo.Schema
+namespace Ocsf.Schema
 {
     /// <summary>
     /// TODO: Reevalute this class. It should sync with documentation and base class for NetworkEndpoint

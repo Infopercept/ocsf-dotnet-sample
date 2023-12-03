@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Csv;
-using OcsfDemo.Schema;
+using Ocsf.Schema;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;

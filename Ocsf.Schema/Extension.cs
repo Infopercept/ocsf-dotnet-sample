@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OcsfDemo.Schema
+namespace Ocsf.Schema
 {
     public class Extension
     {

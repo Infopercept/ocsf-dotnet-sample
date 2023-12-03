@@ -1,4 +1,4 @@
-﻿namespace OcsfDemo.Schema
+﻿namespace Ocsf.Schema
 {
     public readonly struct HttpMethod
     {
