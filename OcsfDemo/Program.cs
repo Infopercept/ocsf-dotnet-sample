@@ -32,7 +32,7 @@ var jsonOptions = new JsonSerializerOptions
 
 string directoryToWatch = @"sample"; // Replace with your directory
 
-using (FileSystemWatcher watcher = new ())
+using (FileSystemWatcher watcher = new())
 {
     watcher.Path = directoryToWatch;
 
@@ -66,7 +66,8 @@ void OnCreated(object sender, FileSystemEventArgs e)
     {
         //var ocsf = AuditLogMapper.Map(line);   
         var ocsf = AdLogMapper.Map(line);
-        Console.WriteLine(JsonSerializer.Serialize(ocsf, jsonOptions));
+        if (ocsf != null)
+            Console.WriteLine(JsonSerializer.Serialize(ocsf, jsonOptions));
     }
 }
 

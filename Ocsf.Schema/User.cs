@@ -8,19 +8,19 @@ namespace Ocsf.Schema
     public class User
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("uid")]
-        public string uid { get; set; }
+        public string? Uid { get; set; }
 
         [JsonPropertyName("type_id")]
-        public int TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         [JsonPropertyName("full_name")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         public void SetUserType(UserType userType)
         {

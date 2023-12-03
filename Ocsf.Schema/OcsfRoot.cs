@@ -9,78 +9,78 @@ namespace Ocsf.Schema
     public class OcsfRoot
     {
         [JsonPropertyName("http_request")]
-        public HttpRequest HttpRequest { get; set; }
+        public HttpRequest? HttpRequest { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         [JsonPropertyName("observables")]
-        public string Observables { get; set; }
+        public string? Observables { get; set; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         [JsonPropertyName("actor")]
-        public string Actor { get; set; }
+        public string? Actor { get; set; }
 
         [JsonPropertyName("time")]
-        public long Time { get; set; }
+        public long? Time { get; set; }
 
         [JsonPropertyName("user")]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [JsonPropertyName("metadata")]
-        public Metadata Metadata { get; set; }
+        public Metadata? Metadata { get; set; }
 
         [JsonPropertyName("servity")]
-        public string Severity { get; set; }
+        public string? Severity { get; set; }
 
         [JsonPropertyName("severity_id")]
-        public int SeverityId { get; set; }
+        public int? SeverityId { get; set; }
 
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
         [JsonPropertyName("type_name")]
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         [JsonPropertyName("activity_id")]
-        public int ActivityId { get; set; }
+        public int? ActivityId { get; set; }
 
         [JsonPropertyName("type_uid")]
-        public int TypeUid { get; set; }
+        public int? TypeUid { get; set; }
 
         [JsonPropertyName("category_name")]
-        public string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
 
         [JsonPropertyName("class_uid")]
-        public int ClassUid { get; set; }
+        public int? ClassUid { get; set; }
 
         [JsonPropertyName("category_uid")]
-        public int CategoryUid { get; set; }
+        public int? CategoryUid { get; set; }
 
         [JsonPropertyName("class_name")]
-        public string ClassName { get; set; }
+        public string? ClassName { get; set; }
 
         [JsonPropertyName("timezone_offset")]
-        public int TimezoneOffset { get; set; }
+        public int? TimezoneOffset { get; set; }
 
         [JsonPropertyName("activity_name")]
-        public string ActivityName { get; set; }
+        public string? ActivityName { get; set; }
 
         [JsonPropertyName("src_endpoint")]
-        public Endpoint SourceEndpoint { get; set; }
+        public Endpoint? SourceEndpoint { get; set; }
 
         [JsonPropertyName("status_detail")]
-        public string StatusDetail { get; set; }
+        public string? StatusDetail { get; set; }
 
         [JsonPropertyName("status_id")]
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
 
         [JsonPropertyName("user_result")]
-        public UserResult UserResult { get; set; }
+        public UserResult? UserResult { get; set; }
 
         [JsonPropertyName("cloud")]
-        public Cloud Cloud { get; set; }
+        public Cloud? Cloud { get; set; }
     }
 }

@@ -5,24 +5,24 @@ namespace Ocsf.Schema
     public class Url
     {
         [JsonPropertyName("port")]
-        public int Port { get; set; }
+        public int? Port { get; set; }
 
         [JsonPropertyName("scheme")]
-        public string Scheme { get; set; }
+        public string? Scheme { get; set; }
 
         [JsonPropertyName("path")]
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         [JsonPropertyName("hostname")]
-        public string Hostname { get; set; }
+        public string? Hostname { get; set; }
 
         [JsonPropertyName("query_string")]
-        public string QueryString { get; set; }
+        public string? QueryString { get; set; }
 
         [JsonPropertyName("category_ids")]
-        public List<WebsiteCategory> WebsiteCategories { get; set; }
+        public List<WebsiteCategory>? WebsiteCategories { get; set; }
 
         [JsonPropertyName("url_string")]
-        public string UrlValue { get; set; }
+        public string? UrlValue { get; set; }
     }
 }

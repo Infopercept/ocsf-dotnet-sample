@@ -12,7 +12,7 @@ namespace Ocsf.Azure.Mapper
             }
 
             // Unix epoch starts on 1970-01-01T00:00:00Z
-            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime epoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan elapsedTime = dateTime - epoch;
             return elapsedTime.Ticks / TimeSpan.TicksPerMillisecond; // Convert ticks to milliseconds
         }

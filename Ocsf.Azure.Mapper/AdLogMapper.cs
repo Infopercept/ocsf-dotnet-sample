@@ -5,8 +5,10 @@ namespace Ocsf.Azure.Mapper
 {
     public static class AdLogMapper
     {
-        public static OcsfRoot Map(ICsvLine? line)
+        public static OcsfRoot? Map(ICsvLine? line)
         {
+            if (line == null) return null;
+
             // Header is handled, each line will contain the actual row data
             var dateUtc = DataExtensions.ConvertDateTimeToLong(line["Date (UTC)"]);
             var requestId = line["Request ID"];
@@ -33,7 +35,7 @@ namespace Ocsf.Azure.Mapper
                     Name = username,
                     FullName = userFullName,
                     TypeId = (int)UserType.User,
-                    uid = correlationId
+                    Uid = correlationId
                 },
                 Cloud = new Cloud
                 {

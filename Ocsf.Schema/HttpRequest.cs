@@ -5,18 +5,18 @@ namespace Ocsf.Schema
     public class HttpRequest
     {
         [JsonPropertyName("args")]
-        public string Args { get; set; }
+        public string? Args { get; set; }
 
         [JsonPropertyName("url")]
-        public Url Url { get; set; }
+        public Url? Url { get; set; }
 
         [JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         [JsonPropertyName("http_headers")]
-        public List<HttpHeader> HttpHeaders { get; set; }
+        public List<HttpHeader>? HttpHeaders { get; set; }
 
         [JsonPropertyName("http_method")]
-        public HttpMethod HttpMethod { get; set; }
+        public HttpMethod? HttpMethod { get; set; }
     }
 }

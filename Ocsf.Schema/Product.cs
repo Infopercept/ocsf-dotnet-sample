@@ -8,18 +8,18 @@ namespace Ocsf.Schema
     public class Product
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("uid")]
-        public string Uid { get; set; }
+        public string? Uid { get; set; }
 
         [JsonPropertyName("lang")]
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
         [JsonPropertyName("url_string")]
-        public string UrlString { get; set; }
+        public string? UrlString { get; set; }
 
         [JsonPropertyName("vendor_name")]
-        public string VendorName { get; set; }
+        public string? VendorName { get; set; }
     }
 }

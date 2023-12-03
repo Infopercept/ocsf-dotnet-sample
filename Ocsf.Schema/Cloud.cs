@@ -8,10 +8,10 @@ namespace Ocsf.Schema
     public class Cloud
     {
         [JsonPropertyName("provider")]
-        public string Provider { get; set; }
+        public string? Provider { get; set; }
 
         [JsonPropertyName("region")]
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
         // TODO: Add Optional parameters
     }

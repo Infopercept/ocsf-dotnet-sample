@@ -17,7 +17,7 @@ namespace OcsfAzureAd;
 
 public class Function
 {
-    private static CsvOptions csvOptions = new CsvOptions // Defaults
+    private static CsvOptions csvOptions = new()
     {
         RowsToSkip = 0, // Allows skipping of initial rows without csv data
                         //SkipRow = (row, idx) => string.IsNullOrEmpty(row) || row[0] == '#',
@@ -34,7 +34,7 @@ public class Function
         NewLine = Environment.NewLine // The new line string to use when multiline field values are read (Requires "AllowNewLineInEnclosedFieldValues" to be set to "true" for this to have any effect.)
     };
 
-    private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+    private static JsonSerializerOptions jsonOptions = new()
     {
         WriteIndented = true,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
@@ -72,40 +72,40 @@ public class Function
         {
             var record = evt.Records[0];
             string sourceBucket = record.S3.Bucket.Name;
-            string destinationBucket = "ocsf-sec-lake-azure"; // Set your destination bucket name here
+            string destinationBucket = "ocsf-lake-azure"; // Set your destination bucket name here
             string fileName = record.S3.Object.Key;
             output.AppendLine($"File {fileName} uploaded to bucket {sourceBucket}");
             context.Logger.LogLine($"File {fileName} uploaded to bucket {sourceBucket}");
 
             // Read the CSV file from the source bucket
-            using (var response = await s3Client.GetObjectAsync(sourceBucket, fileName))
+            using var response = await s3Client.GetObjectAsync(sourceBucket, fileName);
+            var list = new List<OcsfRoot>();
+            foreach (var line in CsvReader.ReadFromStream(response.ResponseStream))
             {
-                var list = new List<OcsfRoot>();
-                foreach (var line in CsvReader.ReadFromStream(response.ResponseStream))
+                OcsfRoot? item = AdLogMapper.Map(line);
+                if (item != null)
                 {
-                    list.Add(AdLogMapper.Map(line));
-                }
-
-                // Write the modified records to a new CSV file
-                using (var stream = new MemoryStream())
-                using (var writer = new Utf8JsonWriter(stream))
-                {
-                    JsonSerializer.Serialize(writer, list, jsonOptions);
-
-                    writer.Flush();
-                    stream.Position = 0;
-
-                    // Upload the modified file to the destination bucket
-                    await s3Client.PutObjectAsync(new PutObjectRequest
-                    {
-                        BucketName = destinationBucket,
-                        Key = fileName,
-                        InputStream = stream
-                    });
-
-                    context.Logger.LogLine($"File processed and uploaded from {sourceBucket}/{fileName} to {destinationBucket}/{fileName}");
+                    list.Add(item);
                 }
             }
+
+            // Write the modified records to a new CSV file
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream);
+            JsonSerializer.Serialize(writer, list, jsonOptions);
+
+            writer.Flush();
+            stream.Position = 0;
+
+            // Upload the modified file to the destination bucket
+            await s3Client.PutObjectAsync(new PutObjectRequest
+            {
+                BucketName = destinationBucket,
+                Key = fileName,
+                InputStream = stream
+            });
+
+            context.Logger.LogLine($"File processed and uploaded from {sourceBucket}/{fileName} to {destinationBucket}/{fileName.Replace(".csv", ".json")}");
         }
         catch (Exception ex)
         {
