@@ -5,7 +5,11 @@ using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Csv;
+using Ocsf.Azure.Mapper;
+using Ocsf.Schema;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace OcsfAzureAd;
 
@@ -17,7 +21,7 @@ public class Function
     {
         RowsToSkip = 0, // Allows skipping of initial rows without csv data
                         //SkipRow = (row, idx) => string.IsNullOrEmpty(row) || row[0] == '#',
-        Separator = '\0', // Autodetects based on first row
+        Separator = ',', // Autodetects based on first row
         TrimData = false, // Can be used to trim each cell
         Comparer = null, // Can be used for case-insensitive comparison for names
         HeaderMode = HeaderMode.HeaderPresent, // Assumes first row is a header row
@@ -28,6 +32,12 @@ public class Function
         AllowBackSlashToEscapeQuote = false, // Allows the sequence "\"" to be a valid quoted value (in addition to the standard """")
         AllowSingleQuoteToEncloseFieldValues = false, // Allows the single-quote character to be used to enclose field values
         NewLine = Environment.NewLine // The new line string to use when multiline field values are read (Requires "AllowNewLineInEnclosedFieldValues" to be set to "true" for this to have any effect.)
+    };
+
+    private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+    {
+        WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
 
@@ -70,15 +80,18 @@ public class Function
             // Read the CSV file from the source bucket
             using (var response = await s3Client.GetObjectAsync(sourceBucket, fileName))
             {
+                var list = new List<OcsfRoot>();
                 foreach (var line in CsvReader.ReadFromStream(response.ResponseStream))
                 {
-
+                    list.Add(AdLogMapper.Map(line));
                 }
 
                 // Write the modified records to a new CSV file
                 using (var stream = new MemoryStream())
-                using (var writer = new StreamWriter(stream))
+                using (var writer = new Utf8JsonWriter(stream))
                 {
+                    JsonSerializer.Serialize(writer, list, jsonOptions);
+
                     writer.Flush();
                     stream.Position = 0;
 
