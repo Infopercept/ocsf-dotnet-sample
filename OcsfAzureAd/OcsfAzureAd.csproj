@@ -39,4 +39,8 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="2.2.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.0" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Ocsf.Schema\Ocsf.Schema.csproj" />
+  </ItemGroup>
 </Project>

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcsfAzureAd", "OcsfAzureAd\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcsfAzureAd.Tests", "OcsfAzureAd.Tests\OcsfAzureAd.Tests.csproj", "{CB2DA405-F8F1-49FA-B143-CBBC399CAA29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocsf.Schema", "Ocsf.Schema\Ocsf.Schema.csproj", "{CA385798-76E0-4118-AF0C-F5FB1274448F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CB2DA405-F8F1-49FA-B143-CBBC399CAA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB2DA405-F8F1-49FA-B143-CBBC399CAA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB2DA405-F8F1-49FA-B143-CBBC399CAA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

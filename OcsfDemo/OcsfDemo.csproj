@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ocsf.Schema\Ocsf.Schema.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="sample\ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
