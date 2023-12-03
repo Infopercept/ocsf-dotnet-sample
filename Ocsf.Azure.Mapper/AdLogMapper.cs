@@ -11,7 +11,7 @@ namespace Ocsf.Azure.Mapper
             var dateUtc = DataExtensions.ConvertDateTimeToLong(line["Date (UTC)"]);
             var requestId = line["Request ID"];
             var userAgent = line["User agent"];
-            var correlationId = line["CorrelationId"];
+            var correlationId = line["Correlation ID"];
             var userId = line["User ID"];
             var username = line["Username"];
             var userFullName = line["User"];
