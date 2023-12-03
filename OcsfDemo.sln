@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcsfAzureAd.Tests", "OcsfAz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocsf.Schema", "Ocsf.Schema\Ocsf.Schema.csproj", "{CA385798-76E0-4118-AF0C-F5FB1274448F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocsf.Azure.Mapper", "Ocsf.Azure.Mapper\Ocsf.Azure.Mapper.csproj", "{86A7C857-2544-4B36-8877-019E654AC1F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA385798-76E0-4118-AF0C-F5FB1274448F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A7C857-2544-4B36-8877-019E654AC1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A7C857-2544-4B36-8877-019E654AC1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A7C857-2544-4B36-8877-019E654AC1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A7C857-2544-4B36-8877-019E654AC1F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

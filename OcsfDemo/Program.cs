@@ -1,12 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Csv;
+using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 Console.WriteLine("OCSF Demo!");
-
 
 var csvOptions = new CsvOptions // Defaults
 {
@@ -65,76 +65,9 @@ void OnCreated(object sender, FileSystemEventArgs e)
     var csv = File.ReadAllText(e.FullPath);
     foreach (var line in CsvReader.ReadFromText(csv))
     {
-        // Header is handled, each line will contain the actual row data
-        var dateUtc = ConvertDateTimeToLong(line["Date (UTC)"]);
-        var correlationId = line["CorrelationId"];
-        var service = line["Service"];
-        var category = line["Category"];
-        var activity = line["Activity"];
-        var result = line["Result"];
-        var resultReason = line["ResultReason"];
-        var actorType = line["ActorType"];
-        var actorName = actorType == "User" ? line["ActorUserPrincipalName"] : line["ActorDisplayName"];
-        var username = line["ActorUserPrincipalName"];
-
-        var ipAddress = line["IPAddress"];
-
-        var ocsf = new OcsfRoot
-        {
-            ActivityId = 3001,
-            Time = dateUtc,
-            Message = correlationId,
-            CategoryName = category,
-            ActivityName = activity,
-            Status = result,
-            StatusDetail = result,
-            Actor = actorType,
-            Observables = service,
-            User = new User
-            {
-                Type = actorType,
-                Name = actorName,
-                uid = correlationId                
-            },
-            Cloud = new Cloud
-            {
-                Provider = "Azure",
-                Region = "East US"
-            },
-            Severity = Severity.Informational.ToString(),
-            SeverityId = (int) Severity.Informational,
-            SourceEndpoint = new Endpoint
-            {
-                Name = actorType,
-                IpAddress = ipAddress
-            }
-        };
-
-        if(actorType == "User")
-        {
-            ocsf.User.SetUserType(UserType.User);
-        }
-        else
-        {
-            ocsf.User.SetUserType(UserType.System);
-        }
-
+        var ocsf = AzureAuditLogMapper.Map(line);   
         Console.WriteLine(JsonSerializer.Serialize(ocsf, jsonOptions));
     }
 }
-
-static long ConvertDateTimeToLong(string utcString)
-{
-    if (!DateTime.TryParse(utcString, null, DateTimeStyles.AdjustToUniversal, out DateTime dateTime))
-    {
-        return 0;
-    }
-
-    // Unix epoch starts on 1970-01-01T00:00:00Z
-    DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-    TimeSpan elapsedTime = dateTime - epoch;
-    return elapsedTime.Ticks / TimeSpan.TicksPerMillisecond; // Convert ticks to milliseconds
-}
-
 
 Console.ReadLine();
