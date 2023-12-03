@@ -41,6 +41,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\Ocsf.Azure.Mapper\Ocsf.Azure.Mapper.csproj" />
     <ProjectReference Include="..\Ocsf.Schema\Ocsf.Schema.csproj" />
   </ItemGroup>
 </Project>
