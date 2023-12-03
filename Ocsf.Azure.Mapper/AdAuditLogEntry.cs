@@ -3,7 +3,7 @@ using Ocsf.Schema;
 
 namespace Ocsf.Azure.Mapper
 {
-    public static class AzureAuditLogMapper
+    public static class AuditLogMapper
     {
         public static OcsfRoot Map(ICsvLine? line)
         {

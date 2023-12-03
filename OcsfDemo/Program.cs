@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Csv;
 using Ocsf.Azure.Mapper;
-using Ocsf.Schema;
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -12,7 +10,8 @@ var csvOptions = new CsvOptions // Defaults
 {
     RowsToSkip = 0, // Allows skipping of initial rows without csv data
     //SkipRow = (row, idx) => string.IsNullOrEmpty(row) || row[0] == '#',
-    Separator = '\0', // Autodetects based on first row
+    //Separator = '\0', // Autodetects based on first row
+    Separator = ',', // Autodetects based on first row
     TrimData = false, // Can be used to trim each cell
     Comparer = null, // Can be used for case-insensitive comparison for names
     HeaderMode = HeaderMode.HeaderPresent, // Assumes first row is a header row
@@ -63,9 +62,10 @@ void OnCreated(object sender, FileSystemEventArgs e)
     Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
 
     var csv = File.ReadAllText(e.FullPath);
-    foreach (var line in CsvReader.ReadFromText(csv))
+    foreach (var line in CsvReader.ReadFromText(csv, csvOptions))
     {
-        var ocsf = AzureAuditLogMapper.Map(line);   
+        //var ocsf = AuditLogMapper.Map(line);   
+        var ocsf = AdLogMapper.Map(line);
         Console.WriteLine(JsonSerializer.Serialize(ocsf, jsonOptions));
     }
 }
