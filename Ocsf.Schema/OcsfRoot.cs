@@ -47,8 +47,17 @@ namespace Ocsf.Schema
         [JsonPropertyName("activity_id")]
         public int? ActivityId { get; set; }
 
+        [JsonPropertyName("activity_name")]
+        public string? ActivityName { get; set; }
+
         [JsonPropertyName("type_uid")]
-        public int? TypeUid { get; set; }
+        public int? TypeUid
+        {
+            get
+            {
+                return ClassUid ?? 0 * 100 + ActivityId ?? 0;
+            }
+        }
 
         [JsonPropertyName("category_name")]
         public string? CategoryName { get; set; }
@@ -64,9 +73,6 @@ namespace Ocsf.Schema
 
         [JsonPropertyName("timezone_offset")]
         public int? TimezoneOffset { get; set; }
-
-        [JsonPropertyName("activity_name")]
-        public string? ActivityName { get; set; }
 
         [JsonPropertyName("src_endpoint")]
         public Endpoint? SourceEndpoint { get; set; }

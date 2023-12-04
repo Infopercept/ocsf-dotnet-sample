@@ -9,17 +9,23 @@ namespace Ocsf.Azure.Mapper
         {
             if (line == null) return null;
 
-            // Header is handled, each line will contain the actual row data
+            //Base
+            var status = line["Status"];
             var dateUtc = DataExtensions.ConvertDateTimeToLong(line["Date (UTC)"]);
             var requestId = line["Request ID"];
             var userAgent = line["User agent"];
             var correlationId = line["Correlation ID"];
+            
+            //User
             var userId = line["User ID"];
             var username = line["Username"];
             var userFullName = line["User"];
             var userType = line["User type"];
 
-            var status = line["Status"];
+            //Cloud
+
+
+            //Actor
 
             var ocsf = new OcsfRoot
             {
@@ -37,10 +43,17 @@ namespace Ocsf.Azure.Mapper
                     TypeId = (int)UserType.User,
                     Uid = correlationId
                 },
+                Actor = new Actor
+                {
+                    Id = userId,
+                    Type = userType,
+                    TypeId = (int)UserType.User,
+                    Uid = correlationId
+                },
                 Cloud = new Cloud
                 {
                     Provider = "Azure",
-                    Region = "East US"
+                    Region = "East US"                    
                 },
                 Severity = Severity.Informational.ToString(),
                 SeverityId = (int)Severity.Informational,
