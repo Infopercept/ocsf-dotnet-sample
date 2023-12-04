@@ -43,13 +43,13 @@ namespace Ocsf.Azure.Mapper
                     TypeId = (int)UserType.User,
                     Uid = correlationId
                 },
-                Actor = new Actor
+              /*  Actor = new Actor
                 {
                     Id = userId,
                     Type = userType,
                     TypeId = (int)UserType.User,
                     Uid = correlationId
-                },
+                },*/
                 Cloud = new Cloud
                 {
                     Provider = "Azure",
