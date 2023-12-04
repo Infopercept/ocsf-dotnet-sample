@@ -44,10 +44,4 @@
     <ProjectReference Include="..\Ocsf.Azure.Mapper\Ocsf.Azure.Mapper.csproj" />
     <ProjectReference Include="..\Ocsf.Schema\Ocsf.Schema.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="template.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

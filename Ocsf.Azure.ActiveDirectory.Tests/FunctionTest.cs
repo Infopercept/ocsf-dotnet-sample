@@ -4,7 +4,7 @@ using Amazon.Lambda.S3Events;
 using static Amazon.Lambda.S3Events.S3Event;
 
 
-namespace OcsfAzureAd.Tests;
+namespace Ocsf.Azure.ActiveDirectory.Tests;
 
 public class FunctionTest
 {

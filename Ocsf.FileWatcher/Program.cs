@@ -4,7 +4,7 @@ using Ocsf.Azure.Mapper;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-Console.WriteLine("OCSF Demo!");
+Console.WriteLine("OCSF File Watcher.");
 
 var csvOptions = new CsvOptions // Defaults
 {
