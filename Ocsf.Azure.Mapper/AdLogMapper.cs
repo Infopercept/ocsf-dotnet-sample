@@ -67,9 +67,9 @@ namespace Ocsf.Azure.Mapper
                     Url = new Url
                     {
                         UrlValue = correlationId,
-                        WebsiteCategories = new List<WebsiteCategory>
+                        WebsiteCategories = new List<int>
                         {
-                            WebsiteCategory.Computer_Information_Security
+                            (int) WebsiteCategory.Computer_Information_Security
                         }
                     }
                 }

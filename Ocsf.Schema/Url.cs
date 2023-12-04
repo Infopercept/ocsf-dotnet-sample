@@ -21,14 +21,14 @@ namespace Ocsf.Schema
         public string? QueryString { get; set; }
 
         [JsonPropertyName("category_ids")]
-        public List<WebsiteCategory> WebsiteCategories { get; set; }
+        public List<int> WebsiteCategories { get; set; }
 
         [JsonPropertyName("url_string")]
         public string? UrlValue { get; set; }
 
         public Url()
         {
-            WebsiteCategories = new List<WebsiteCategory>();
+            WebsiteCategories = new List<int>();
         }
     }
 }
