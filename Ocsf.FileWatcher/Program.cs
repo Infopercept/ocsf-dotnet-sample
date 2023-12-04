@@ -62,7 +62,7 @@ void OnCreated(object sender, FileSystemEventArgs e)
     foreach (var line in CsvReader.ReadFromText(csv, csvOptions))
     {
         //var ocsf = AuditLogMapper.Map(line);   
-        var ocsf = AdLogMapper.Map(line);
+        var ocsf = ActiveDirectoryLogMapper.Map(line);
         if (ocsf != null)
         {
             list.Add(ocsf);

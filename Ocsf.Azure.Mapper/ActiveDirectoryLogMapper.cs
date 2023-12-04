@@ -3,7 +3,7 @@ using Ocsf.Schema;
 
 namespace Ocsf.Azure.Mapper
 {
-    public static class AdLogMapper
+    public static class ActiveDirectoryLogMapper
     {
         public static OcsfRoot? Map(ICsvLine? line)
         {
@@ -29,9 +29,11 @@ namespace Ocsf.Azure.Mapper
 
             var ocsf = new OcsfRoot
             {
-                ActivityId = 3001,
+                ClassUid = ClassType.Authentication,
+                ClassName = ClassType.Authentication.Name,
+                ActivityId = AuthenticationActivity.Login,
+                ActivityName = AuthenticationActivity.Login.Name,
                 Time = dateUtc,
-                ClassName = "Azure Active Directory",
                 Message = correlationId,
                 Status = status,
                 StatusDetail = status,

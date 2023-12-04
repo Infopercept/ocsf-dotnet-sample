@@ -65,11 +65,11 @@ namespace Ocsf.Schema
         [JsonPropertyName("class_uid")]
         public int? ClassUid { get; set; }
 
-        [JsonPropertyName("category_uid")]
-        public int? CategoryUid { get; set; }
-
         [JsonPropertyName("class_name")]
         public string? ClassName { get; set; }
+
+        [JsonPropertyName("category_uid")]
+        public int? CategoryUid { get; set; }
 
         [JsonPropertyName("timezone_offset")]
         public int? TimezoneOffset { get; set; }

@@ -74,7 +74,7 @@ public class Function
             var list = new List<OcsfRoot>();
             foreach (var line in CsvReader.ReadFromStream(response.ResponseStream))
             {
-                OcsfRoot? item = AdLogMapper.Map(line);
+                OcsfRoot? item = ActiveDirectoryLogMapper.Map(line);
                 if (item != null)
                 {
                     list.Add(item);

@@ -17,6 +17,6 @@ namespace Ocsf.Schema
         public List<HttpHeader>? HttpHeaders { get; set; }
 
         [JsonPropertyName("http_method")]
-        public HttpMethod? HttpMethod { get; set; }
+        public string? HttpMethod { get; set; }
     }
 }
