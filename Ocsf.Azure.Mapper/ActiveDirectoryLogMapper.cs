@@ -30,9 +30,10 @@ namespace Ocsf.Azure.Mapper
             var ocsf = new OcsfRoot
             {
                 ClassUid = ClassType.Authentication,
-                ClassName = ClassType.Authentication.Name,
                 ActivityId = AuthenticationActivity.Login,
                 ActivityName = AuthenticationActivity.Login.Name,
+                CategoryUid = CategoryType.IDAM,
+                CategoryName = CategoryType.IDAM.Name,
                 Time = dateUtc,
                 Message = correlationId,
                 Status = status,
@@ -43,7 +44,7 @@ namespace Ocsf.Azure.Mapper
                     Name = username,
                     FullName = userFullName,
                     TypeId = (int)UserType.User,
-                    Uid = correlationId
+                    Uid = userId
                 },
               /*  Actor = new Actor
                 {

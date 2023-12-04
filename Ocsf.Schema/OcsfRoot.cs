@@ -8,6 +8,48 @@ namespace Ocsf.Schema
     /// </summary>
     public class OcsfRoot
     {
+        [JsonPropertyName("class_uid")]
+        public int ClassUid { get; set; }
+
+        [JsonPropertyName("class_name")]
+        public string ClassName
+        {
+            get
+            {
+                return ((ClassType)ClassUid).Name;
+            }
+        }
+
+        [JsonPropertyName("activity_id")]
+        public int ActivityId { get; set; }
+
+        [JsonPropertyName("activity_name")]
+        public string? ActivityName { get; set; }
+
+        [JsonPropertyName("type_uid")]
+        public int? TypeUid
+        {
+            get
+            {
+                return ClassUid * 100 + ActivityId;
+            }
+        }
+
+        [JsonPropertyName("type_name")]
+        public string TypeName
+        {
+            get
+            {
+                return $"{ClassName}: {ActivityName}";
+            }
+        }
+
+        [JsonPropertyName("category_uid")]
+        public int? CategoryUid { get; set; }
+
+        [JsonPropertyName("category_name")]
+        public string? CategoryName { get; set; }
+
         [JsonPropertyName("http_request")]
         public HttpRequest? HttpRequest { get; set; }
 
@@ -32,7 +74,7 @@ namespace Ocsf.Schema
         [JsonPropertyName("metadata")]
         public Metadata? Metadata { get; set; }
 
-        [JsonPropertyName("servity")]
+        [JsonPropertyName("severity")]
         public string? Severity { get; set; }
 
         [JsonPropertyName("severity_id")]
@@ -40,36 +82,6 @@ namespace Ocsf.Schema
 
         [JsonPropertyName("duration")]
         public int? Duration { get; set; }
-
-        [JsonPropertyName("type_name")]
-        public string? TypeName { get; set; }
-
-        [JsonPropertyName("activity_id")]
-        public int? ActivityId { get; set; }
-
-        [JsonPropertyName("activity_name")]
-        public string? ActivityName { get; set; }
-
-        [JsonPropertyName("type_uid")]
-        public int? TypeUid
-        {
-            get
-            {
-                return ClassUid ?? 0 * 100 + ActivityId ?? 0;
-            }
-        }
-
-        [JsonPropertyName("category_name")]
-        public string? CategoryName { get; set; }
-
-        [JsonPropertyName("class_uid")]
-        public int? ClassUid { get; set; }
-
-        [JsonPropertyName("class_name")]
-        public string? ClassName { get; set; }
-
-        [JsonPropertyName("category_uid")]
-        public int? CategoryUid { get; set; }
 
         [JsonPropertyName("timezone_offset")]
         public int? TimezoneOffset { get; set; }
