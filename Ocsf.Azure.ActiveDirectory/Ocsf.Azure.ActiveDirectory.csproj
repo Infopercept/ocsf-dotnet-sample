@@ -1,37 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AWSProjectType>Lambda</AWSProjectType>
-    <AssemblyName>bootstrap</AssemblyName>
-    <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- 
-		Enable trimming to reduce package size of self contained publish which can reduce cold starts. Trimming alters
-		the .NET assemblies put in the deployment package. Additional runtime testing is required to make sure trimming
-		does not have any unattended consequences.
-    
-	<PublishTrimmed>true</PublishTrimmed>
-	-->
-    <!-- Generate ready to run images during publishing to improve cold start time. -->
-    <PublishReadyToRun>true</PublishReadyToRun>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AWSProjectType>Lambda</AWSProjectType>
+		<AssemblyName>bootstrap</AssemblyName>
+		<!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+		<!-- PublishAot tells the compiler to publish native AOT binaries. -->
+		<PublishAot>true</PublishAot>
+		<!-- StripSymbols tells the compiler to strip debugging symbols from the final executable if we're on Linux and put them into their own file. 
+		This will greatly reduce the final executable's size.-->
+		<StripSymbols>true</StripSymbols>
+		<!-- TrimMode partial will only trim assemblies marked as trimmable. To reduce package size make all assemblies trimmable and set TrimMode to full.
+		If there are trim warnings during build, you can hit errors at runtime.-->
+		<TrimMode>partial</TrimMode>
+	</PropertyGroup>
   <!-- 
   Amazon Linux 2023 does not have libicu a system library for internationalization preinstalled. When publishing to the provided.al2023 runtime Microsoft.ICU.ICU4C.Runtime
   package need to be included to support internationalization.
   -->
+
+	<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-arm64'">
+		<RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" />
+		<PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
+	</ItemGroup>
+	
   <ItemGroup>
     <PackageReference Include="Csv" Version="2.0.93" />
-    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0" />
   </ItemGroup>
   
   <ItemGroup>
-    <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" />
     <PackageReference Include="Amazon.Lambda.S3Events" Version="3.1.0" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.304.1" />
-    <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
   </ItemGroup>
   
   <ItemGroup>
