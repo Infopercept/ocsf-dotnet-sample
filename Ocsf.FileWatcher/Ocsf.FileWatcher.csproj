@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="Csv" Version="2.0.93" />
-    <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

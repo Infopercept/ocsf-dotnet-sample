@@ -1,8 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Csv;
 using Ocsf.Azure.Mapper;
+using Ocsf.Schema;
+using Parquet.Serialization;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 Console.WriteLine("OCSF File Watcher.");
 
@@ -22,12 +23,6 @@ var csvOptions = new CsvOptions // Defaults
     AllowBackSlashToEscapeQuote = false, // Allows the sequence "\"" to be a valid quoted value (in addition to the standard """")
     AllowSingleQuoteToEncloseFieldValues = false, // Allows the single-quote character to be used to enclose field values
     NewLine = Environment.NewLine // The new line string to use when multiline field values are read (Requires "AllowNewLineInEnclosedFieldValues" to be set to "true" for this to have any effect.)
-};
-
-var jsonOptions = new JsonSerializerOptions
-{
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
 };
 
 string directoryToWatch = @"sample"; // Replace with your directory
@@ -61,14 +56,24 @@ void OnCreated(object sender, FileSystemEventArgs e)
 {
     Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
 
+    var list = new List<OcsfRoot>();
+
     var csv = File.ReadAllText(e.FullPath);
     foreach (var line in CsvReader.ReadFromText(csv, csvOptions))
     {
         //var ocsf = AuditLogMapper.Map(line);   
         var ocsf = AdLogMapper.Map(line);
         if (ocsf != null)
-            Console.WriteLine(JsonSerializer.Serialize(ocsf, jsonOptions));
+        {
+            list.Add(ocsf);
+            Console.WriteLine(JsonSerializer.Serialize(ocsf, OcsfJsonSerializerContext.Default.OcsfRoot));
+        }
     }
+
+    // Write to Parquet
+    using var fileStream = File.OpenWrite(e.FullPath.Replace(".csv", ".parquet"));
+    var task = ParquetSerializer.SerializeAsync(list, fileStream);
+    task.Wait();
 }
 
 Console.ReadLine();

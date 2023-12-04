@@ -60,6 +60,18 @@ namespace Ocsf.Azure.Mapper
                 SourceEndpoint = new Endpoint
                 {
                     
+                },
+                HttpRequest = new HttpRequest
+                {
+                    UserAgent = userAgent,
+                    Url = new Url
+                    {
+                        UrlValue = correlationId,
+                        WebsiteCategories = new List<WebsiteCategory>
+                        {
+                            WebsiteCategory.Computer_Information_Security
+                        }
+                    }
                 }
             };          
 

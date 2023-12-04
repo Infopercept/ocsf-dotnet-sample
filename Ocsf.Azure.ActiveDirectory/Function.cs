@@ -9,7 +9,6 @@ using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Ocsf.Azure.ActiveDirectory;
 
@@ -33,13 +32,6 @@ public class Function
         AllowSingleQuoteToEncloseFieldValues = false, // Allows the single-quote character to be used to enclose field values
         NewLine = Environment.NewLine // The new line string to use when multiline field values are read (Requires "AllowNewLineInEnclosedFieldValues" to be set to "true" for this to have any effect.)
     };
-
-    private static JsonSerializerOptions jsonOptions = new()
-    {
-        WriteIndented = true,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-    };
-
 
     /// <summary>
     /// The main entry point for the custom runtime.
@@ -92,7 +84,8 @@ public class Function
             // Write the modified records to a new CSV file
             using var stream = new MemoryStream();
             using var writer = new Utf8JsonWriter(stream);
-            JsonSerializer.Serialize(writer, list, jsonOptions);
+
+            JsonSerializer.Serialize(writer, list, OcsfJsonSerializerContext.Default.ListOcsfRoot);
 
             writer.Flush();
             stream.Position = 0;
