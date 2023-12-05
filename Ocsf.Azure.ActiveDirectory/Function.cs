@@ -7,8 +7,8 @@ using Amazon.S3.Model;
 using Csv;
 using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
+using Parquet.Serialization;
 using System.Text;
-using System.Text.Json;
 
 namespace Ocsf.Azure.ActiveDirectory;
 
@@ -59,12 +59,25 @@ public class Function
     {
         var s3Client = new AmazonS3Client();
 
+        var bucketName = Environment.GetEnvironmentVariable("bucket_name");
+
+        var accountId = Environment.GetEnvironmentVariable("account_id");
+        var region = Environment.GetEnvironmentVariable("region");
+        var sourceLocation = Environment.GetEnvironmentVariable("source_location");
+        var eventDay = DateTime.UtcNow.ToString("yyyyMMdd");
+        var destinationFileName = DateTime.UtcNow.ToString("HHmmss") + ".parquet";
+
+        var destinationKey = string.Concat(sourceLocation, "/", "1.0/", "region=", region, "/", "accountId=", accountId, "/", "eventDay=", eventDay, "/", destinationFileName);
+
+        context.Logger.LogLine("Destination bucket: " + bucketName);
+        context.Logger.LogLine("Destination key: " + destinationKey);
+
         var output = new StringBuilder();
+
         try
         {
             var record = evt.Records[0];
             string sourceBucket = record.S3.Bucket.Name;
-            string destinationBucket = "ocsf-lake-azure"; // Set your destination bucket name here
             string fileName = record.S3.Object.Key;
             output.AppendLine($"File {fileName} uploaded to bucket {sourceBucket}");
             context.Logger.LogLine($"File {fileName} uploaded to bucket {sourceBucket}");
@@ -83,22 +96,24 @@ public class Function
 
             // Write the modified records to a new CSV file
             using var stream = new MemoryStream();
-            using var writer = new Utf8JsonWriter(stream);
 
-            JsonSerializer.Serialize(writer, list, OcsfJsonSerializerContext.Default.ListOcsfRoot);
+            //using var writer = new Utf8JsonWriter(stream);
+            //JsonSerializer.Serialize(writer, list, OcsfJsonSerializerContext.Default.ListOcsfRoot);
+            //writer.Flush();
 
-            writer.Flush();
+            await ParquetSerializer.SerializeAsync(list, stream);
+            
             stream.Position = 0;
 
             // Upload the modified file to the destination bucket
             await s3Client.PutObjectAsync(new PutObjectRequest
             {
-                BucketName = destinationBucket,
-                Key = fileName,
+                BucketName = bucketName,
+                Key = destinationKey,
                 InputStream = stream
             });
 
-            context.Logger.LogLine($"File processed and uploaded from {sourceBucket}/{fileName} to {destinationBucket}/{fileName.Replace(".csv", ".json")}");
+            context.Logger.LogLine($"File processed and uploaded.");
         }
         catch (Exception ex)
         {
