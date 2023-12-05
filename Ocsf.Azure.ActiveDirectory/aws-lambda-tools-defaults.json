@@ -10,7 +10,7 @@
     "region"      : "ap-south-1",
     "configuration" : "Release",
     "function-runtime" : "provided.al2023",
-    "function-memory-size" : 128,
+    "function-memory-size" : 256,
     "function-timeout"     : 30,
     "function-handler"     : "bootstrap",
     "msbuild-parameters"   : "--self-contained true",
@@ -22,7 +22,7 @@
     "function-subnets"      : "",
     "function-security-groups" : "",
     "tracing-mode"             : "Active",
-    "environment-variables"    : "",
+    "environment-variables"    : "\"source_location\"=\"azure-ad\";\"account_id\"=\"d36615d9-b483-4175-83da-3e968b0fde20\";\"bucket_name\"=\"ocsf-lake-azure\";\"region\"=\"mumbai\"",
     "image-tag"                : "",
     "function-description"     : ""
 }
