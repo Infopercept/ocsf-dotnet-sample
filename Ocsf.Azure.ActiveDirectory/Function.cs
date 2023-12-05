@@ -8,13 +8,16 @@ using Csv;
 using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
 using Parquet.Serialization;
+using System.Collections.Generic;
+using System;
 using System.Text;
+using System.Text.Json;
 
 namespace Ocsf.Azure.ActiveDirectory;
 
 //[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-public class Function
+public partial class Function
 {
     private static CsvOptions csvOptions = new()
     {
@@ -40,10 +43,12 @@ public class Function
     private static async Task Main(string[] args)
     {
         Func<S3Event, ILambdaContext, Task<string>> handler = FunctionHandler;
-        await LambdaBootstrapBuilder.Create(handler, new DefaultLambdaJsonSerializer())
+        await LambdaBootstrapBuilder.Create(handler, new SourceGeneratorLambdaJsonSerializer<LambdaFunctionJsonSerializerContext>())
             .Build()
             .RunAsync();
     }
+
+    public readonly static IAmazonS3 s3Client = new AmazonS3Client();
 
     /// <summary>
     /// A simple function that takes a string and does a ToUpper
@@ -57,21 +62,6 @@ public class Function
     /// <returns></returns>
     public async static Task<string> FunctionHandler(S3Event evt, ILambdaContext context)
     {
-        var s3Client = new AmazonS3Client();
-
-        var bucketName = Environment.GetEnvironmentVariable("bucket_name");
-
-        var accountId = Environment.GetEnvironmentVariable("account_id");
-        var region = Environment.GetEnvironmentVariable("region");
-        var sourceLocation = Environment.GetEnvironmentVariable("source_location");
-        var eventDay = DateTime.UtcNow.ToString("yyyyMMdd");
-        var destinationFileName = DateTime.UtcNow.ToString("HHmmss") + ".parquet";
-
-        var destinationKey = string.Concat(sourceLocation, "/", "1.0/", "region=", region, "/", "accountId=", accountId, "/", "eventDay=", eventDay, "/", destinationFileName);
-
-        context.Logger.LogLine("Destination bucket: " + bucketName);
-        context.Logger.LogLine("Destination key: " + destinationKey);
-
         var output = new StringBuilder();
 
         try
@@ -94,26 +84,10 @@ public class Function
                 }
             }
 
-            // Write the modified records to a new CSV file
-            using var stream = new MemoryStream();
+            await WriteJson(list, context);
 
-            //using var writer = new Utf8JsonWriter(stream);
-            //JsonSerializer.Serialize(writer, list, OcsfJsonSerializerContext.Default.ListOcsfRoot);
-            //writer.Flush();
+            await WriteParquet(list, context);
 
-            await ParquetSerializer.SerializeAsync(list, stream);
-            
-            stream.Position = 0;
-
-            // Upload the modified file to the destination bucket
-            await s3Client.PutObjectAsync(new PutObjectRequest
-            {
-                BucketName = bucketName,
-                Key = destinationKey,
-                InputStream = stream
-            });
-
-            context.Logger.LogLine($"File processed and uploaded.");
         }
         catch (Exception ex)
         {
@@ -121,5 +95,82 @@ public class Function
         }
 
         return output.ToString();
+    }
+
+    public async static Task WriteJson(List<OcsfRoot> list, ILambdaContext context)
+    {
+        if (list.Count == 0)
+        {
+            context.Logger.LogLine("No records to process.");
+            return;
+        }
+
+        var bucketName = Environment.GetEnvironmentVariable("bucket_name");
+
+        var accountId = Environment.GetEnvironmentVariable("account_id");
+        var region = Environment.GetEnvironmentVariable("region");
+        var sourceLocation = Environment.GetEnvironmentVariable("source_location");
+        var eventDay = DateTime.UtcNow.ToString("yyyyMMdd");
+        var destinationFileName = DateTime.UtcNow.ToString("HHmmss") + ".json";
+
+        var destinationKey = string.Concat("ocsf/", sourceLocation, "/", "region=", region, "/", "accountId=", accountId, "/", "eventDay=", eventDay, "/", destinationFileName);
+
+        context.Logger.LogLine("Destination bucket: " + bucketName);
+        context.Logger.LogLine("Destination key: " + destinationKey);
+
+        using var stream = new MemoryStream();
+        using var writer = new Utf8JsonWriter(stream);
+        JsonSerializer.Serialize(writer, list, OcsfJsonSerializerContext.Default.ListOcsfRoot);
+        writer.Flush();
+
+        stream.Position = 0;
+
+        // Upload the modified file to the destination bucket
+        await s3Client.PutObjectAsync(new PutObjectRequest
+        {
+            BucketName = bucketName,
+            Key = destinationKey,
+            InputStream = stream
+        });
+
+        context.Logger.LogLine($"JSON file uploaded.");
+    }
+
+    public async static Task WriteParquet(List<OcsfRoot> list, ILambdaContext context)
+    {
+        if(list.Count == 0)
+        {
+            context.Logger.LogLine("No records to process.");
+            return;
+        }
+
+        var bucketName = Environment.GetEnvironmentVariable("bucket_name");
+
+        var accountId = Environment.GetEnvironmentVariable("account_id");
+        var region = Environment.GetEnvironmentVariable("region");
+        var sourceLocation = Environment.GetEnvironmentVariable("source_location");
+        var eventDay = DateTime.UtcNow.ToString("yyyyMMdd");
+        var destinationFileName = DateTime.UtcNow.ToString("HHmmss") + ".parquet";
+
+        var destinationKey = string.Concat("ext/", sourceLocation, "/", "region=", region, "/", "accountId=", accountId, "/", "eventDay=", eventDay, "/", destinationFileName);
+
+        context.Logger.LogLine("Destination bucket: " + bucketName);
+        context.Logger.LogLine("Destination key: " + destinationKey);
+
+        // Write the modified records to a new CSV file
+        using var stream = new MemoryStream();
+        await ParquetSerializer.SerializeAsync(list, stream);
+
+        stream.Position = 0;
+
+        // Upload the modified file to the destination bucket
+        await s3Client.PutObjectAsync(new PutObjectRequest
+        {
+            BucketName = bucketName,
+            Key = destinationKey,
+            InputStream = stream
+        });
+
+        context.Logger.LogLine($"Parquet file uploaded.");
     }
 }
