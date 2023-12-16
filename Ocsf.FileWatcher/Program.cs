@@ -4,8 +4,21 @@ using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
 using Parquet.Serialization;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
-Console.WriteLine("OCSF File Watcher.");
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+Console.WriteLine($"Environment: {environmentName}");
+
+IConfigurationRoot config = new ConfigurationBuilder()
+    .AddJsonFile("appSettings.json")
+    .AddJsonFile($"appSettings.{environmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
+Settings? settings = config.GetRequiredSection("Settings").Get<Settings>();
+
+Console.WriteLine(settings);
 
 var csvOptions = new CsvOptions // Defaults
 {
