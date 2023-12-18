@@ -8,6 +8,36 @@ namespace Ocsf.Schema
     /// </summary>
     public class OcsfRoot
     {
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("message")]
+        public string? Message { get; set; }
+
+        [JsonPropertyName("status_id")]
+        public int? StatusId { get; set; }
+
+        [JsonPropertyName("status")]
+        public string? Status { get; set; }
+
+        [JsonPropertyName("time")]
+        public long? Time { get; set; }
+
+        [JsonPropertyName("logon_type")]
+        public string? LogonType { get; set; }
+
+        [JsonPropertyName("logon_type_id")]
+        public int? LogonTypeId { get; set; }
+
+        [JsonPropertyName("user")]
+        public User? User { get; set; }
+
+        [JsonPropertyName("auth_protocol")]
+        public string? AuthProtocol { get; set; }
+
+        [JsonPropertyName("auth_protocol_id")]
+        public int? AuthProtocolId { get; set; }
+
         [JsonPropertyName("class_uid")]
         public int ClassUid { get; set; }
 
@@ -53,24 +83,16 @@ namespace Ocsf.Schema
         [JsonPropertyName("http_request")]
         public HttpRequest? HttpRequest { get; set; }
 
-        [JsonPropertyName("message")]
-        public string? Message { get; set; }
-
+        
         [JsonPropertyName("observables")]
         public string? Observables { get; set; }
 
-        [JsonPropertyName("status")]
-        public string? Status { get; set; }
+        
 
         [JsonPropertyName("actor")]
         public string? Actor { get; set; }
 
-        [JsonPropertyName("time")]
-        public long? Time { get; set; }
-
-        [JsonPropertyName("user")]
-        public User? User { get; set; }
-
+        
         [JsonPropertyName("metadata")]
         public Metadata? Metadata { get; set; }
 
@@ -92,8 +114,7 @@ namespace Ocsf.Schema
         [JsonPropertyName("status_detail")]
         public string? StatusDetail { get; set; }
 
-        [JsonPropertyName("status_id")]
-        public int? StatusId { get; set; }
+        
 
         [JsonPropertyName("user_result")]
         public UserResult? UserResult { get; set; }

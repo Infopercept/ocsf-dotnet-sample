@@ -7,17 +7,16 @@ public class Settings
     public int OcsfClass { get; set; }
 
     [JsonPropertyName("ProgramType")]
-    public string? ProgramType { get; set; }
+    public required string ProgramType { get; set; }
 
     [JsonPropertyName("SourceFolder")]
-    public string? SourceFolder { get; set; }
+    public required string SourceFolder { get; set; }
 
     [JsonPropertyName("DestinationFolder")]
-    public string? DestinationFolder { get; set; }
+    public required string DestinationFolder { get; set; }
 
     public override string ToString()
     {
         return $"OcsfClass: {OcsfClass}, ProgramType: {ProgramType}, SourceFolder: {SourceFolder}, DestinationFolder: {DestinationFolder}";
     }
-
 }

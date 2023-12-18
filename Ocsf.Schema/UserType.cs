@@ -1,4 +1,9 @@
-﻿namespace Ocsf.Schema
+﻿using Microsoft.VisualBasic;
+using System.Net;
+using System.Runtime.InteropServices;
+using System;
+
+namespace Ocsf.Schema
 {
     public enum UserType
     {

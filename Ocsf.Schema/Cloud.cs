@@ -7,12 +7,19 @@ namespace Ocsf.Schema
     /// </summary>
     public class Cloud
     {
+        [JsonPropertyName("account")]
+        public Account? Account { get; set; }
+
         [JsonPropertyName("provider")]
         public string? Provider { get; set; }
 
         [JsonPropertyName("region")]
         public string? Region { get; set; }
 
-        // TODO: Add Optional parameters
+        [JsonPropertyName("project_uid")]
+        public string? Project { get; set; }
+
+        [JsonPropertyName("zone")]
+        public string? Zone { get; set; }
     }
 }
