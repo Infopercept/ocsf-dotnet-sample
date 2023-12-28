@@ -8,8 +8,6 @@ using Csv;
 using Ocsf.Azure.Mapper;
 using Ocsf.Schema;
 using Parquet.Serialization;
-using System.Collections.Generic;
-using System;
 using System.Text;
 using System.Text.Json;
 

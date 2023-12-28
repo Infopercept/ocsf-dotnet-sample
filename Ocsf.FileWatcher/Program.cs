@@ -5,7 +5,6 @@ using Ocsf.Schema;
 using Parquet.Serialization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Parquet.Schema;
 
 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -36,13 +35,13 @@ var csvOptions = new CsvOptions // Defaults
     //SkipRow = (row, idx) => string.IsNullOrEmpty(row) || row[0] == '#',
     //Separator = '\0', // Autodetects based on first row
     Separator = ',', // Autodetects based on first row
-    TrimData = false, // Can be used to trim each cell
+    TrimData = true, // Can be used to trim each cell
     Comparer = null, // Can be used for case-insensitive comparison for names
     HeaderMode = HeaderMode.HeaderPresent, // Assumes first row is a header row
     ValidateColumnCount = false, // Checks each row immediately for column count
     ReturnEmptyForMissingColumn = false, // Allows for accessing invalid column names
     Aliases = null, // A collection of alternative column names
-    AllowNewLineInEnclosedFieldValues = false, // Respects new line (either \r\n or \n) characters inside field values enclosed in double quotes.
+    AllowNewLineInEnclosedFieldValues = true, // Respects new line (either \r\n or \n) characters inside field values enclosed in double quotes.
     AllowBackSlashToEscapeQuote = false, // Allows the sequence "\"" to be a valid quoted value (in addition to the standard """")
     AllowSingleQuoteToEncloseFieldValues = false, // Allows the single-quote character to be used to enclose field values
     NewLine = Environment.NewLine // The new line string to use when multiline field values are read (Requires "AllowNewLineInEnclosedFieldValues" to be set to "true" for this to have any effect.)
