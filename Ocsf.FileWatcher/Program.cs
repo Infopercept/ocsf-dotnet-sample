@@ -5,6 +5,7 @@ using Ocsf.Schema;
 using Parquet.Serialization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Parquet.Schema;
 
 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -83,7 +84,7 @@ else
     // Read files one by one
     foreach (var file in files)
     {
-        Console.WriteLine($"File: {file.FullName}");
+        ValidateCSV(file.FullName);
 
         var list = new List<OcsfRoot>();
 
@@ -134,6 +135,57 @@ else
     }
 
     Console.WriteLine("Press any key to exit");
+}
+
+void ValidateCSV(string fileName)
+{
+    Console.WriteLine($"File: {fileName}");
+
+    if (!File.Exists(fileName))
+    {
+        throw new FileNotFoundException($"The file {fileName} does not exist.");
+    }
+
+    var lines = File.ReadAllLines(fileName);
+
+    if (lines.Length == 0)
+    {
+        throw new InvalidOperationException("The file is empty.");
+    }
+
+    // Read headers and trim whitespaces
+    var headers = lines[0].Split(',').Select(h => h.Trim('"', ' ')).ToList();
+
+    // Check and update duplicate headers
+    var updatedHeaders = UpdateDuplicateHeaders(headers).Select(h => h = $"\"{h}\"").ToList();
+
+    // Replace the first line (header line) with updated headers
+    lines[0] = string.Join(",", updatedHeaders);
+
+    // Write back to file
+    File.WriteAllLines(fileName, lines);
+}
+
+List<string> UpdateDuplicateHeaders(List<string> headers)
+{
+    var headerCounts = new Dictionary<string, int>();
+    var updatedHeaders = new List<string>();
+
+    foreach (var header in headers)
+    {
+        if (!headerCounts.TryGetValue(header, out int value))
+        {
+            headerCounts[header] = 1;
+            updatedHeaders.Add(header);
+        }
+        else
+        {
+            headerCounts[header] = ++value;
+            updatedHeaders.Add($"{header}{value}");
+        }
+    }
+
+    return updatedHeaders;
 }
 
 //Write to Parquet

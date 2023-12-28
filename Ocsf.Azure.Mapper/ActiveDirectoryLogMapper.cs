@@ -65,10 +65,10 @@ namespace Ocsf.Azure.Mapper
 
             //Application: Application,	Application ID,	Resource, Resource ID, Resource tenant ID
 
-            var applicationId = line["Application ID "];
+            var applicationId = line["Application ID"];
             var applicationName = line["Application"];
             var resource = line["Resource"];
-            var resourceId = line["Resource ID "];
+            var resourceId = line["Resource ID"];
             var resourceTenantId = line["Resource tenant ID"];
 
             var ocsf = new OcsfRoot
